@@ -36,7 +36,7 @@ app.use(flash());
 app.use('/', pageRouter);
 
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err =  new Error('Not Found');
     err.status = 404;
     next(err);
 });

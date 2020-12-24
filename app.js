@@ -8,9 +8,11 @@ const flash = require('connect-flash');
 require('dotenv').config();
 
 const pageRouter = require('./routes/page');
+const { sequelize } = require('./models');
 const { POINT_CONVERSION_COMPRESSED } = require('constants');
 
 const app = express();
+sequelize.sync();
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile)

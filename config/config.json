@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
+    "username": "xohoon",
+    "password": "qmdlemfla1!",
+    "database": "xohoon",
+    "host": "222.97.189.144",
     "dialect": "mysql"
   },
   "test": {

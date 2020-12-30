@@ -1,0 +1,53 @@
+extends chat_layout
+
+block content
+    h1= title
+    a#exit-btn(href="/chat") 방 나가기
+    fieldset
+      legend 피해 내용
+      #chat-list
+        for chat in chats
+          if chat.user === luser
+            .mine(style="color:" + chat.user)
+              div {{chat.user}}
+              if chat.gif
+                img(src="/gif/" + chat.gif)
+              else
+                div= chat.chat
+          else if chat.user === 'system'
+            .system
+              div= chat.chat
+          else
+            .other(style="color: {{chat.user}}")
+              div chat.user
+              if chat.gif
+                img(src="/gif/" + chat.gif)
+              else
+                div= chat.chat
+    form#chat-form(action="/chat" method="post" enctype="multipart/form-data")
+      label(for="gif") GIF 올리기
+      input#gif(type="file" name="gif" accept="image/gif")
+      input#chat(type="text" name="chat")
+      button(type="submit") 전송
+    script(src="/socket.io/socket.io.js")
+    script.
+      var socket = io.connect('http://localhost:2959/chat', {
+        path: '/socket.io',
+      });
+      socket.on('join', function (data) {
+        var div = document.createElement('div');
+        div.classList.add('system');
+        var chat = document.createElement('div');
+        div.textContent = data.chat;
+        div.appendChild(chat);
+        document.querySelector('#chat-list').appendChild(div);
+      });
+      socket.on('exit', function (data) {
+        var div = document.createElement('div');
+        div.classList.add('system');
+        var chat = document.createElement('div');
+        div.textContent = data.chat;
+        div.appendChild(chat);
+        document.querySelector('#chat-list').appendChild(div);
+      });
+      //- socket.on('chat')

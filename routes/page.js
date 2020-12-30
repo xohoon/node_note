@@ -47,4 +47,6 @@ router.get('/', (req, res, next) => {
     // });
 });
 
+// chat page
+
 module.exports = router;

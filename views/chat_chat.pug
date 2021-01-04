@@ -4,7 +4,7 @@ block content
     h1= title
     a#exit-btn(href="/chat") 방 나가기
     fieldset
-      legend 피해 내용
+      legend 채팅 내용
       #chat-list
         for chat in chats
           if chat.user === luser

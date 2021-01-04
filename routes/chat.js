@@ -2,7 +2,7 @@ const express = require('express');
 
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
-
+const body = require('body-parser');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -10,7 +10,8 @@ router.get('/', async (req, res, next) => {
       const rooms = await Room.find({ });
       res.render('chat_main', { 
         rooms, 
-        title: 'GIF 채팅방' 
+        title: 'GIF 채팅방',
+        userNick: req.param('userNick')
       });
     } catch (error) {
       console.error(error);
@@ -19,7 +20,10 @@ router.get('/', async (req, res, next) => {
   });
 
   router.get('/room', (req, res) => {
-    res.render('chat_room', { title: 'GIF 채팅방 생성' });
+    res.render('chat_room', { 
+      title: 'GIF 채팅방 생성',
+      userNick: req.param('userNick')
+    });
   });
   
   router.post('/room', async (req, res, next) => {
@@ -28,7 +32,7 @@ router.get('/', async (req, res, next) => {
         title: req.body.title,
         max: req.body.max,
         // owner: req.session.color,
-        owner: Math.random().toString(36),
+        owner: req.body.userNick, 
         password: req.body.password,
       });
       const io = req.app.get('io');

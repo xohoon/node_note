@@ -1,7 +1,7 @@
 extends chat_layout
 
 block content
-  h1 피해자모임
+  h1 채팅
   fieldset
     legend 채팅방 목록
     table
@@ -20,8 +20,8 @@ block content
             td(style='color:' + room.owner)= room.owner
             -var password = room.password ? 'true' : 'false';
             td: button(data-password=password data-id=room._id).join-btn 입장
-  .error-message error
-  a(href="/chat/room") 피해자 그룹 추가
+  .error-message= error
+  a(href="/chat/room?userNick="+userNick) 채팅그룹 추가
   script(src="/socket.io/socket.io.js")
   script.
     var socket = io.connect('http://localhost:2959/room', { // 네임스페이스

@@ -37,6 +37,9 @@ body
         footer
             | Made by 
             a(href="https://www.github.com/xohoon/node_note" target="_blank") xohoon
+            br
+            if user
+                a(href="/chat?userNick="+user.nick) 채팅하기
     block content
       
     //-   |       {% endblock %}

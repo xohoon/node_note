@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 채팅
+  h1 GIF 채팅방
   fieldset
     legend 채팅방 목록
     table
@@ -21,14 +21,14 @@ block content
             -var password = room.password ? 'true' : 'false';
             td: button(data-password=password data-id=room._id).join-btn 입장
   .error-message= error
-  a(href="/chat/room?userNick="+userNick) 채팅그룹 추가
   input#userNick(type="hidden" name="userNick" value=userNick)
-  script(src="/socket.io/socket.io.js")
+  a(href='/chat/room?userNick='+userNick) 채팅방 생성
+  script(src='/socket.io/socket.io.js')
   script.
-    var socket = io.connect('http://localhost:2959/room', { // 네임스페이스
-      path: '/socket.io',
+    var socket = io.connect('http://localhost:2959/room', { // namespace
+      path: '/socket.io'
     });
-    socket.on('newRoom', function (data) { // 새 방 이벤트 시 새 방 생성
+    socket.on('newRoom', function (data) { // create new room
       var tr = document.createElement('tr');
       var td = document.createElement('td');
       td.textContent = data.title;
@@ -52,32 +52,24 @@ block content
       td.appendChild(button);
       tr.appendChild(td);
       tr.dataset.id = data._id;
-      document.querySelector('table tbody').appendChild(tr); // 화면에 추가
+      document.querySelector('table tbody').appendChild(tr);
     });
-    socket.on('removeRoom', function (data) { // 방 제거 이벤트 시 id가 일치하는 방 제거
+    socket.on('removeRoom', function (data) {
       document.querySelectorAll('tbody tr').forEach(function (tr) {
-          if (tr.dataset.id === data) {
-              tr.parentNode.removeChild(tr);
-          }
+        if (tr.dataset.id === data) {
+          tr.parentNode.removeChild(tr);
+        }
       });
     });
-    function addBtnEvent(e) { // 방 입장 클릭 시
+    function addBtnEvent(e) {
       var userNick = document.getElementsByName("userNick")[0].value;
       if (e.target.dataset.password === 'true') {
-          const password = prompt('비밀번호를 입력하세요');
-          location.href = '/chat/room/' + e.target.dataset.id + '?password=' + password + '?userNick=' + userNick;
+        const password = prompt('비밀번호를 입력하세요');
+        location.href = '/chat/room/' + e.target.dataset.id + '?password=' + password + '?userNick=' + userNick;
       } else {
-          location.href = '/chat/room/' + e.target.dataset.id + '?userNick=' + userNick;
+        location.href = '/chat/room/' + e.target.dataset.id + '?userNick=' + userNick;
       }
     }
     document.querySelectorAll('.join-btn').forEach(function (btn) {
       btn.addEventListener('click', addBtnEvent);
     });
-    
-    //- script.
-    //-   window.onload = () => {
-    //-     if (new URL(location.href).searchParams.get('error')) {
-    //-         alert(new URL(location.href).searchParams.get('error'));
-    //-     }
-    //-   };
-

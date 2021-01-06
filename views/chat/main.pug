@@ -1,4 +1,4 @@
-extends chat_layout
+extends layout
 
 block content
   h1 채팅
@@ -22,6 +22,7 @@ block content
             td: button(data-password=password data-id=room._id).join-btn 입장
   .error-message= error
   a(href="/chat/room?userNick="+userNick) 채팅그룹 추가
+  input#userNick(type="hidden" name="userNick" value=userNick)
   script(src="/socket.io/socket.io.js")
   script.
     var socket = io.connect('http://localhost:2959/room', { // 네임스페이스
@@ -61,11 +62,12 @@ block content
       });
     });
     function addBtnEvent(e) { // 방 입장 클릭 시
+      var userNick = document.getElementsByName("userNick")[0].value;
       if (e.target.dataset.password === 'true') {
           const password = prompt('비밀번호를 입력하세요');
-          location.href = '/chat/room/' + e.target.dataset.id + '?password=' + password;
+          location.href = '/chat/room/' + e.target.dataset.id + '?password=' + password + '?userNick=' + userNick;
       } else {
-          location.href = '/chat/room/' + e.target.dataset.id;
+          location.href = '/chat/room/' + e.target.dataset.id + '?userNick=' + userNick;
       }
     }
     document.querySelectorAll('.join-btn').forEach(function (btn) {

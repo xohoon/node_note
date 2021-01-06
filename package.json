@@ -43,7 +43,7 @@
     "pug": "^3.0.0",
     "request": "^2.88.2",
     "sequelize": "^4.44.4",
-    "socket.io": "^3.0.3",
+    "socket.io": "^3.0.0",
     "ws": "^7.4.1"
   },
   "devDependencies": {
